@@ -2,6 +2,7 @@ package com.bosko.springrest.services;
 
 import com.bosko.springrest.api.v1.mapper.CustomerMapper;
 import com.bosko.springrest.api.v1.model.CustomerDTO;
+import com.bosko.springrest.controllers.v1.CustomerController;
 import com.bosko.springrest.domain.Customer;
 import com.bosko.springrest.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
@@ -41,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                 .map(customerMapper::customerToCustomerDTO)
                 .map(customerDTO -> {
-                    customerDTO.setCustomerUrl("/api/v1/customer/" + id);
+                    customerDTO.setCustomerUrl(getCustomerUrl(id));
                     return customerDTO;
                 })
                 .orElseThrow(RuntimeException::new);
@@ -59,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         CustomerDTO returnDto = customerMapper.customerToCustomerDTO(savedCustomer);
 
-        returnDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+        returnDto.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
 
         return returnDto;
     }
@@ -84,10 +85,14 @@ public class CustomerServiceImpl implements CustomerService {
 
             CustomerDTO returnDTO = customerMapper.customerToCustomerDTO(customerRepository.save(customer));
 
-            returnDTO.setCustomerUrl("/api/v1/customer/" + id);
+            returnDTO.setCustomerUrl(getCustomerUrl(id));
             return returnDTO;
 
         }).orElseThrow(RuntimeException::new);
+    }
+
+    private String getCustomerUrl(Long id) {
+        return CustomerController.BASE_URL + "/" + id;
     }
 
     @Override

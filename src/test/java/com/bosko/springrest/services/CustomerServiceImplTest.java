@@ -2,6 +2,7 @@ package com.bosko.springrest.services;
 
 import com.bosko.springrest.api.v1.mapper.CustomerMapper;
 import com.bosko.springrest.api.v1.model.CustomerDTO;
+import com.bosko.springrest.controllers.v1.CustomerController;
 import com.bosko.springrest.domain.Customer;
 import com.bosko.springrest.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +87,7 @@ class CustomerServiceImplTest {
         CustomerDTO savedDto = customerService.createNewCustomer(customerDTO);
 
         assertEquals(customerDTO.getFirstName(), savedDto.getFirstName());
-        assertEquals("/api/v1/customer/1", savedDto.getCustomerUrl());
+        assertEquals(CustomerController.BASE_URL + "/1", savedDto.getCustomerUrl());
     }
 
     @Test
