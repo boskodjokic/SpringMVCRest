@@ -6,6 +6,7 @@ import com.bosko.springrest.bootstrap.Bootstrap;
 import com.bosko.springrest.domain.Customer;
 import com.bosko.springrest.repository.CategoryRepository;
 import com.bosko.springrest.repository.CustomerRepository;
+import com.bosko.springrest.repository.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -31,6 +32,9 @@ class CustomerServiceImplIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @BeforeEach
@@ -39,7 +43,7 @@ class CustomerServiceImplIT {
         System.out.println(customerRepository.findAll().size());
 
 
-        Bootstrap boostrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap boostrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         boostrap.run();
 
         customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
