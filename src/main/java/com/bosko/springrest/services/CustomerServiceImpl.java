@@ -2,6 +2,7 @@ package com.bosko.springrest.services;
 
 import com.bosko.springrest.api.v1.mapper.CustomerMapper;
 import com.bosko.springrest.api.v1.model.CustomerDTO;
+import com.bosko.springrest.domain.Customer;
 import com.bosko.springrest.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,18 @@ public class CustomerServiceImpl implements CustomerService {
                 .map(customerMapper::customerToCustomerDTO)
                 .orElseThrow(RuntimeException::new);
 
+    }
+
+    @Override
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+
+        Customer savedCustomer = customerRepository.save(customer);
+
+        CustomerDTO returnDto = customerMapper.customerToCustomerDTO(savedCustomer);
+
+        returnDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+
+        return returnDto;
     }
 }
