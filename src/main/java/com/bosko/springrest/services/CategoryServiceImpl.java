@@ -3,10 +3,12 @@ package com.bosko.springrest.services;
 import com.bosko.springrest.api.v1.mapper.CategoryMapper;
 import com.bosko.springrest.api.v1.model.CategoryDTO;
 import com.bosko.springrest.repository.CategoryRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryMapper categoryMapper;
